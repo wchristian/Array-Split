@@ -26,16 +26,13 @@ or less than $split_size, with the last one usually being the one to have less i
 =cut
 
 sub split_by {
-    my ( $split_size, @original ) = @_;
+    my $split_size = shift;
 
-    $split_size = ceil max( $split_size, 1 );
+    $split_size = max( $split_size, 1 );
 
     my @sub_arrays;
-    for my $element ( @original ) {
-        push @sub_arrays, [] if !@sub_arrays;
-        push @sub_arrays, [] if @{ $sub_arrays[-1] } >= $split_size;
-
-        push @{ $sub_arrays[-1] }, $element;
+    while ( @_ ) {
+        push @sub_arrays, [ splice @_, 0, $split_size ];
     }
 
     return @sub_arrays;
